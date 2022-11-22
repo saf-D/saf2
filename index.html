@@ -1,61 +1,79 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <h1>简易留言板</h1>
-        <textarea id="memo" cols="60" rows="10"></textarea>
-        <input type="button" value="追加内容" onclick="saveStorage('memo')" />
-        <input type="button" value="初始化" onclick="clearStorage('msg')" />
-        <hr />
-        <p id="msg"></p>
-        <script type="text/javascript">
+<html lang="en">
 
-            function saveStorage(id) {
-                //获取textarea的value值
-                var data = document.getElementById(id).value;
-                //获取当前时间戳
-                var time = new Date().getTime();
-                //将时间戳作为键值，textarea的value值作为键值的内容保存在本地数据库
-                localStorage.setItem(time,data);
-                //保存成功后提示成功
-                console.log("数据已保存");
-                //设置loadStorage函数的传参（ID值）
-                loadStorage('msg');
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星汉与远洋-留言板</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
 
-            function loadStorage(id) {
-                var result = '<table border="1">';
-                //遍历本地数据所有内容
-                for(var i = 0; i < localStorage.length; i++) {
-                    //获取每一条新增的键值
-                    var kes = localStorage.key(i);
-                    //获取新增键值的内容
-                    var value = localStorage.getItem(kes);
-                    //获取时间对象
-                    var date = new Date();
-                    //将时间戳转化为正常时间 Mon Jun 19 1972 11:12:44 GMT+0800 (中国标准时间) 的格式
-                    date.setTime(kes);
-                    //将转化后的内容变成字符串
-                    var datestr = date.toGMTString();
-                    //将所有新增内容添加到result变量中
-                    result += '<tr><td>' + value + '</td><td>' + datestr + '</td></tr>'
+    body {
+        padding: 100px;
+    }
+
+    textarea {
+        width: 200px;
+        height: 100px;
+        border: 1px pink solid;
+        /* 不设置轮廓 */
+        outline: none;
+        /* 设置其不能改变长宽 */
+        resize: none;
+    }
+
+    li {
+        width: 300px;
+        padding: 5px;
+        background-color: #eee;
+        font-size: 15px;
+        margin: 15px 0;
+    }
+
+    li a {
+        float: right;
+    }
+</style>
+
+<body>
+    <textarea></textarea>
+    <button>点击这里发布awa</button>
+    <ul></ul>
+    <script>
+        //1、获取元素
+        var txt = document.querySelector("textarea");
+        var btn = document.querySelector("button");
+        var ul = document.querySelector("ul");
+        //2、给button绑定点击事件
+        btn.onclick = function () {
+            if (txt.value == "") {//当文本框中没有文字时，提示
+                alert("您没有留下您的内容QWQ")
+            } else {
+                //创建元素li作为留言区
+                var li = document.createElement("li");
+                //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
+                li.innerHTML = txt.value + "<a href='javascript:;'>点击这里删除</a>"
+                txt.value = "";//添加之后文本框的内容清空
+                //将留言添加到ul中，而且在最上方
+                ul.insertBefore(li, ul.children[0]);
+                //当点击删除时删除ul中的li
+                var as = document.querySelectorAll("a");
+                //循环给每个删除绑定事件
+                for (var i = 0; i < as.length; i++) {
+                    as[i].onclick = function () {
+                        //删除当前a标签所在位置的父节点li
+                        ul.removeChild(this.parentNode);
+                    }
                 }
-                result += '</table>';
-                var target = document.getElementById(id);
-                //将所有内容添加到元素中显示
-                target.innerHTML = result;
-
             }
+        }
+    </script>
+    <p>请在留言完毕后截图上传到SAF_email1@163.com并留下你的名字，这样我们才能回复您</p>
+</body>
 
-            function clearStorage() {
-                //清除本地储存所有内容
-                localStorage.clear();  
-                console.log("清除完毕");
-            }
-
-        </script>
-    </body>
 </html>
