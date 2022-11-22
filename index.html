@@ -52,12 +52,12 @@
         //2、给button绑定点击事件
         btn.onclick = function () {
             if (txt.value == "") {//当文本框中没有文字时，提示
-                alert("点击这里留下您的内容吧QWQ")
+                alert("您没有留下您的内容QWQ")
             } else {
                 //创建元素li作为留言区
                 var li = document.createElement("li");
                 //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
-                li.innerHTML = txt.value + "<a href='javascript:;'>删除</a>"
+                li.innerHTML = txt.value + "<a href='javascript:;'>点击这里删除</a>"
                 txt.value = "";//添加之后文本框的内容清空
                 //将留言添加到ul中，而且在最上方
                 ul.insertBefore(li, ul.children[0]);
